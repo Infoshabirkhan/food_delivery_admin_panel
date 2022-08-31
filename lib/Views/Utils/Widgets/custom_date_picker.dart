@@ -16,27 +16,23 @@ class CustomDatePicker extends StatelessWidget {
       child: Container(
         width: 217.w,
         height: 43.h,
-        padding: EdgeInsets.only(left: 10.w),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(20.sp),
         ),
         child: Row(
           children: [
+
             Expanded(
-              child: Icon(Icons.calendar_month),
-            ),
-            Expanded(
-              flex: 2,
-              child: Align(
-                alignment: Alignment.center,
-                child: TextFormField(
-                  enabled: false,
-                  controller: controller,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'dd/mm/yyyy',
-                  ),
+              flex: 4,
+              child: TextFormField(
+
+                enabled: false,
+                controller: controller,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.calendar_today),
+                  border: InputBorder.none,
+                  hintText: 'dd/mm/yyyy',
                 ),
               ),
             ),

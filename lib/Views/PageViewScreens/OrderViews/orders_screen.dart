@@ -36,17 +36,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       border: OutlineInputBorder(
 
                         borderSide: BorderSide(
-                          color: AppColors.kGrey.withOpacity(0.1)
+                          color: AppColors.kGrey.withOpacity(0.5)
                         ),
                         borderRadius: BorderRadius.circular(20.sp),
 
                       ),enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppColors.kGrey.withOpacity(0.1)
+                          color: AppColors.kGrey.withOpacity(0.5)
                         ),
                         borderRadius: BorderRadius.circular(20.sp),
 
                       ),
+
                       filled: true,
                        fillColor: AppColors.kGrey
                     ),
@@ -57,7 +58,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   Expanded(child: Row(
                     children: [
-                      Expanded(child: CustomDatePicker(controller: dateController,)),
+                      Expanded(
+
+                          flex: 2,
+                          child: CustomDatePicker(controller: dateController,)),
                       Spacer(),
                     ],
                   ),),
@@ -93,7 +97,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             "quantity": data['quantity'],
                             "user_image": data['user_image'],
                             "user_mobile_no": data['user_mobile_no'],
-                            "user_name": data['user_name']
+                            "user_name": data['user_name'],
+                            "order_id" : data.id
                           };
                           OrderModel model = OrderModel.fromJson(json);
                           listOfOrders.add(model);

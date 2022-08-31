@@ -13,6 +13,7 @@ class DesktopDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 0.3.sw,
       color: AppColors.kBlue,
       child: Column(
         children: [
@@ -33,7 +34,7 @@ class DesktopDrawer extends StatelessWidget {
               children: [
 
                 DrawerElement(icon: Icons.home, label: 'Home' , jumpToIndex: 0,),
-                DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 2,),
+                DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 1,),
               ],
             ),),
         ],

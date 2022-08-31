@@ -10,8 +10,14 @@ OrderModel orderModelFromJson(String str) => OrderModel.fromJson(json.decode(str
 
 String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 
+
+
+
+
 class OrderModel {
   OrderModel({
+
+    required this.orderId,
     required this.address,
     required this.clientId,
     required this.dateTime,
@@ -27,6 +33,10 @@ class OrderModel {
     required this.userName,
   });
 
+
+
+  static  OrderModel? model;
+  final String orderId;
   final String address;
   final String clientId;
   final Timestamp dateTime;
@@ -55,6 +65,7 @@ class OrderModel {
     userImage: json["user_image"],
     userMobileNo: json["user_mobile_no"],
     userName: json["user_name"],
+    orderId: json['order_id']
   );
 
   Map<String, dynamic> toJson() => {

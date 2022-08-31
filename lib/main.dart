@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +9,13 @@ import 'package:food_delivery_admin_web/Views/PageViewScreens/dashboard_view.dar
 
 import 'Views/Login_views/login_screen.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  Firebase.initializeApp(
-    options: FirebaseOptions(
+
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
       apiKey: "AIzaSyB75sFXOEfeKpLUkDgr6HuiX9u5lc7lUpg",
       appId: "1:88141800442:web:3840da804b1ace124a3a43",
       messagingSenderId: "88141800442",
@@ -33,7 +37,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => DrawerPageviewCubit(0),
             child: MaterialApp(
-              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              title: 'Admin Dashboard',
               theme: ThemeData(
 
                 primarySwatch: Colors.blue,

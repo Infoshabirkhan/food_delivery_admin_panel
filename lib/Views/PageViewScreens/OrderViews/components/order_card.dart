@@ -92,20 +92,25 @@ class OrderCard extends StatelessWidget {
                       color: heading!
                           ? Colors.transparent
                           : model!.orderStatus == "Pending"
-                              ? AppColors.kLightOrange
-                              : AppColors.kLightGreen,
+                          ? AppColors.kLightOrange
+                          : model!.orderStatus == "Rejected"
+                          ? Colors.red.withOpacity(0.3)
+                          : AppColors.kLightGreen,
                     ),
                     alignment:
                         heading! ? Alignment.centerLeft : Alignment.center,
                     child: SelectableText(
                       model != null ? model!.orderStatus : 'Order Status',
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w700,
-                          color: heading!
-                              ? Colors.black
-                              : model!.orderStatus == "Pending"
-                                  ? AppColors.kOrange
-                                  : AppColors.kGreen),
+                        fontWeight: FontWeight.w700,
+                        color: heading!
+                            ? Colors.black
+                            : model!.orderStatus == "Pending"
+                                ? AppColors.kOrange
+                                : model!.orderStatus == "Rejected"
+                                    ? Colors.red
+                                    : AppColors.kGreen,
+                      ),
                     ),
                   ),
                 ),
@@ -113,7 +118,7 @@ class OrderCard extends StatelessWidget {
                     ? const Spacer()
                     : Expanded(
                         child: CustomMenuButton(
-                          orderStatus: model!.orderStatus,
+                          model: model!,
                         ),
                       ),
               ],

@@ -1,18 +1,21 @@
-// Copyright 2019 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_admin_web/Models/Utils/app_colors.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../Models/order_model.dart';
+import '../Order Detail View/order_detail_screen.dart';
+
+
 class CustomMenuButton extends StatelessWidget {
-  final String orderStatus;
+  final OrderModel model;
 
   const CustomMenuButton({
     Key? key,
-    required this.orderStatus,
+    required this.model,
   }) : super(key: key);
 
   @override
@@ -20,15 +23,65 @@ class CustomMenuButton extends StatelessWidget {
     return PopupMenuButton<String>(
       padding: EdgeInsets.zero,
       onSelected: (value) {
+      var data =   FirebaseFirestore.instance.collection('Orders').doc(model.orderId);
+      var userHistory = FirebaseFirestore.instance.collection('Users').doc(model.clientId).collection("OrderHistory").doc(model.documentId);
         print('=======> value $value');
 
         if (value == 'acceptOrder') {
-        } else if (value == 'rejectOrder') {}
+
+
+          data.update({
+            "order_status" : "Deliver",
+          });
+
+          userHistory.update({
+            "order_status" : "Completed",
+
+          });
+        } else if (value == 'rejectOrder') {
+
+          data.update({
+            "order_status" : "Rejected",
+          });
+
+
+          userHistory.update({
+            "order_status" : "Rejected",
+
+          });
+        }else if (value == "viewDetail"){
+
+
+          OrderModel.model = model;
+        PageViewStatic.pageController.jumpToPage(2);
+
+
+
+        }else{
+
+          data.delete();
+        }
       },
       // onSelected: (value) =>
       //     showInSnackBar(localizations.demoMenuSelected(value)),
       itemBuilder: (context) => <PopupMenuEntry<String>>[
-         orderStatus == "Pending" ? PopupMenuItem<String>(
+
+
+        PopupMenuItem<String>(
+          value: 'viewDetail',
+          child: ListTile(
+            leading: const Icon(
+              Icons.visibility,
+            ),
+            title: Text(
+              'View',
+              style: GoogleFonts.roboto(),
+            ),
+          ),
+        ),
+
+
+        model.orderStatus == "Pending" ? const PopupMenuItem<String>(
 
           value: 'acceptOrder',
           child: MenuItems(
@@ -36,7 +89,7 @@ class CustomMenuButton extends StatelessWidget {
             iconData: CupertinoIcons.check_mark_circled,
           ),
         ) :
-         PopupMenuItem<String>(
+         const PopupMenuItem<String>(
 
            value: 'remove',
            child: MenuItems(
@@ -44,10 +97,14 @@ class CustomMenuButton extends StatelessWidget {
              iconData: CupertinoIcons.delete,
            ),
          ),
+
+
+
+
         PopupMenuItem<String>(
           value: 'rejectOrder',
           child: ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.close,
             ),
             title: Text(
