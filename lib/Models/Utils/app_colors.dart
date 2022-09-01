@@ -9,4 +9,6 @@ class AppColors{
   static Color kLightGreen = Color(0xffeaf8ee);
   static Color kGrey = Color(0xfffafafa);
   static Color kOrange = Color(0xfffdd775);
+  static Color kLightBlack = Color(0xff3f4953);
+  static Color kDarkGrey = Color(0xff838d97);
 }

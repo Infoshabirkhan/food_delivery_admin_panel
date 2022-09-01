@@ -21,8 +21,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
-          left: 5.w,
-          right: 5.w,
+          left: 10.sp,
+          right: 10.sp,
         ),        child: Column(
           children: [
             Expanded(

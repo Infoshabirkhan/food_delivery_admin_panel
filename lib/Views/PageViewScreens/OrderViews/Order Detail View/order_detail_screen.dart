@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery_admin_web/Models/Utils/responsive.dart';
 import 'package:food_delivery_admin_web/Models/order_model.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/Order%20Detail%20View/Responsive%20layout/order_detail_large.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../Models/Utils/app_colors.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   const OrderDetailScreen({
@@ -20,15 +24,19 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var price = int.parse(model.price);
-    return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 5,
+    return Scaffold(body: LayoutBuilder(
+      builder: (context, boxConstrait) {
+        print('=====> boxcontrant ${boxConstrait.maxWidth}');
+        if (boxConstrait.maxWidth > Responsive.tabletWidth) {
+          // for web large view
+          return OrderDetialLarge(model: model);
+        } else if (boxConstrait.maxWidth < Responsive.tabletWidth &&
+            boxConstrait.maxWidth > Responsive.mobileWidth) {
+          return Container(
             child: ListView(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
+              padding: EdgeInsets.only(
+                left: 20.sp,
+                right: 20.sp,
               ),
               children: [
                 Align(
@@ -37,376 +45,242 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     onPressed: () {
                       PageViewStatic.pageController.jumpToPage(1);
                     },
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.orange,
-                    ),
-                    label: Text(
-                      'Back',
-                      style: GoogleFonts.roboto(
-                        color: Colors.orange,
-                      ),
-                    ),
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Back'),
                   ),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  'Order ID # ${model.orderId}',
+                SizedBox(height: 10.h,),
+                SelectableText(
+                  'Order Id # ${model.orderId}',
                   style: GoogleFonts.roboto(
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
                   ),
+
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: 'Orders / ',
-                    style: GoogleFonts.roboto(
-                      color: Colors.black,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Orders Detail',
-                        style: GoogleFonts.roboto(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-
-
-
-
-                  Container(
-                    height: 150.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withAlpha(100),
-                          blurRadius: 10
-                        ),
-                      ]
-                    ),
-                    child: Center(child: Image.asset('assets/images/trackorder.jpg'),),
-                  ),
-                  SizedBox(
-                  height: 20.h,
-                ),
-
-
-
-
-
-
+                SizedBox(height: 10.h,),
 
 
                 Container(
+
+                  padding: EdgeInsets.only(left: 10.sp),
+                  height: 100.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withAlpha(100),
-                        blurRadius: 10,
-                      ),
+                      BoxShadow(color: Colors.grey.withAlpha(100), blurRadius: 10,),
                     ],
+
+
                   ),
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                  ),
-                  height: 180.h,
                   child: Column(
                     children: [
-                      Expanded(
-                        child: Row(
-                          children: [
+                      Expanded(child: Row(
+                        children: [
+                          Expanded(child: Row(children: [
+
+                            Expanded(child:Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: NetworkImage(model.userImage)
+                                )
+                              ),
+                            ),),
+
                             Expanded(
                               flex: 2,
-                              child: Text(
-                                'Item',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
+                              child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(model.userName, style: GoogleFonts.roboto(
+
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15.sp
+                              ),),
+                            ),),
+
+
+                          ],),),
+                          Expanded(child: Row(children: [
+
+                            Expanded(child: Icon(Icons.phone),),
                             Expanded(
-                              child: Text(
-                                'Qty',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              flex: 2,
+                              child: Text(model.userMobileNo,style: GoogleFonts.roboto(
+                              fontSize: 15.sp ,
+                               fontWeight: FontWeight.w600
+                            ),),),
+
+                          ],),),
+
+                        ],
+                      ),),
+
+
+                      Divider(),
+                      Expanded(child: Container(
+                        width: 1.sw,
+                        child: Column(
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                          Expanded(child: Text('Address',style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp
+                          ),),),
+                          Expanded(child: Text(model.address,style: GoogleFonts.roboto(
+                            fontSize: 15.sp
+                          ),),),
+
+                        ],),
+                      ),),
+                    ],
+                  ),
+                ),
+
+
+
+                SizedBox(height: 20.h,),
+
+
+                Container(
+
+                  padding: EdgeInsets.all(15.sp),
+                  height: 80.h,
+                decoration: BoxDecoration(
+                  color: AppColors.kLightBlack,
+
+                  borderRadius: BorderRadius.circular(10.sp,),
+                ),
+
+                  child: Row(
+                    children: [
+                      Expanded(child: Container(
+                        child: Row(
+                          children: [
+                            Expanded(child: Container(
+
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle
                               ),
-                            ),
+                            ),),
                             Expanded(
-                              child: Text(
-                                'Price',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Total Price',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
+                              flex: 2,
+                              child: Text('RiderName', style: GoogleFonts.cairo(
+
+                                color: Colors.white,
+
+
+                              fontSize: 15.sp,
+                            ),),),
                           ],
                         ),
-                      ),
-                      Expanded(
+                      ),),
+                      Expanded(child: Container(
+
+
                         child: Row(
                           children: [
-                            Expanded(
-                              flex: 2,
+                            Expanded(child: Container(
+
+                              margin: EdgeInsets.only(right: 10.sp),
+                            decoration: BoxDecoration(
+                              color: AppColors.kDarkGrey,
+                              borderRadius: BorderRadius.circular(10.sp),
+
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(child: Icon(Icons.phone, color: Colors.white,),),
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                  children: [
+
+                                    Expanded(child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('Mobile No:', style: GoogleFonts.roboto(
+                                        color: Colors.white,
+                                        fontSize: 12.sp
+                                      ),),
+                                    ),),
+                                    Expanded(child: Align(
+                                      alignment: Alignment.topLeft,
+
+                                      child: Text('03109898989', style: GoogleFonts.roboto(
+                                          color: Colors.white,
+
+                                          fontSize: 12.sp
+                                      ),),
+                                    ),),
+                                  ],
+                                ),),
+                              ],
+                            ),
+
+                            ),),
+                            Expanded(child: Container(
+
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.sp),
+                                color: AppColors.kDarkGrey,
+                              ),
+
                               child: Row(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                            model.productImage,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          10.sp,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  Expanded(child: Icon(Icons.phone, color: Colors.white,),),
                                   Expanded(
                                     flex: 2,
                                     child: Column(
                                       children: [
-                                        Expanded(
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Main Course',
-                                              style: GoogleFonts.roboto(
-                                                color: Colors.red,
-                                                fontSize: 3.sp
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
 
-                                            child: Text(
+                                        Expanded(child: Align(
+                                          alignment: Alignment.centerLeft,
 
-                                              model.pName,
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                          child: Text('Mobile No:', style: GoogleFonts.roboto(
+                                              color: Colors.white,
+
+                                              fontSize: 12.sp
+                                          ),),
+                                        ),),
+                                        Expanded(child: Align(
+                                          alignment: Alignment.topLeft,
+
+                                          child: Text('03109898989', style: GoogleFonts.roboto(
+                                              color: Colors.white,
+
+                                              fontSize: 12.sp
+                                          ),),
+                                        ),),
                                       ],
-                                    ),
-                                  ),
+                                    ),),
                                 ],
                               ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                '${model.quantity}x',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Rs: ${model.price}',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Rs: ${model.quantity * price}',
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            const Expanded(
-                              child: Icon(Icons.close),
-                            ),
+
+                            ),),
                           ],
                         ),
-                      ),
+                      ),),
                     ],
                   ),
-                )
+
+
+                ),
+
+
               ],
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(right: 20),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 10.h, top: 10.h),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(
-                          15.sp,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          model.orderStatus,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withAlpha(100),
-                          blurRadius: 10,
-                        ),
-                      ], color: Colors.white),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: NetworkImage(model.userImage),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            model.userName,
-                                            style: GoogleFonts.roboto(),
-                                          ),
-                                        ),
-                                      ),
-                                      // Expanded(child: Align(
-                                      //   alignment: Alignment.bottomLeft,
-                                      //   child: Text(model.address, style: GoogleFonts.roboto(
-                                      //
-                                      //   ),),
-                                      // ),),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      const Expanded(
-                                        child: Icon(Icons.phone),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(model.userMobileNo),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Divider(),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      const Expanded(
-                                        child: Icon(CupertinoIcons.location),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(model.address),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(
-                                        'Description',
-                                        style: GoogleFonts.roboto(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      model.productDescription,
-                                      style: GoogleFonts.roboto(
-                                        ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                        // color: Colors.blue,
-                        ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
+          );
+        } else {
+          return Container(
+            child: Center(
+              child: Text('mobile'),
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        }
+      },
+    ));
   }
 }

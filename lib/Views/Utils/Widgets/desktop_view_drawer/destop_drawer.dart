@@ -12,32 +12,34 @@ class DesktopDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 0.3.sw,
-      color: AppColors.kBlue,
-      child: Column(
-        children: [
-          Expanded(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Admin Panel',
-                style: GoogleFonts.roboto(color: Colors.white),
+    return Drawer(
+      child: Container(
+       // width: 0.3.sw,
+        color: AppColors.kBlue,
+        child: Column(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Admin Panel',
+                  style: GoogleFonts.roboto(color: Colors.white),
+                ),
               ),
             ),
-          ),
 
-          Expanded(
+            Expanded(
 
-            flex: 6,
-            child: ListView(
-              children: [
+              flex: 6,
+              child: ListView(
+                children: const [
 
-                DrawerElement(icon: Icons.home, label: 'Home' , jumpToIndex: 0,),
-                DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 1,),
-              ],
-            ),),
-        ],
+                  DrawerElement(icon: Icons.home, label: 'Home' , jumpToIndex: 0,),
+                  DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 1,),
+                ],
+              ),),
+          ],
+        ),
       ),
     );
   }
