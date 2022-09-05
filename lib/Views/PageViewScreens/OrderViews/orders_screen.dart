@@ -6,6 +6,7 @@ import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/compone
 import '../../../Models/Utils/app_colors.dart';
 import '../../../Models/order_model.dart';
 import '../../Utils/Widgets/custom_date_picker.dart';
+import '../../Utils/Widgets/my_loading_indicator.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -98,7 +99,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             "user_image": data['user_image'],
                             "user_mobile_no": data['user_mobile_no'],
                             "user_name": data['user_name'],
-                            "order_id" : data.id
+                            "order_id" : data.id,
+                            "rider_address" : data['rider_address'],
+                            "rider_image" : data['rider_image'],
+                            "rider_phone" : data['rider_phone'],
+                            "rider_name" : data['rider_name']
                           };
                           OrderModel model = OrderModel.fromJson(json);
                           listOfOrders.add(model);
@@ -132,9 +137,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       }
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return  const MyLoadingIndicator();
                     } else {
                       return const Center(
                         child: Text('Something went wrong'),

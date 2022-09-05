@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Controllers/Cubits/drawer_pageview_cubit.dart';
-import 'package:food_delivery_admin_web/Models/Utils/app_colors.dart';
 import 'package:food_delivery_admin_web/Models/Utils/responsive.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/HomeScreenViews/home_screen.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/add_new_brand.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/brands_views.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/CategoriesViews/categories_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/Order%20Detail%20View/order_detail_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/orders_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
@@ -24,7 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     'Dashboard',
     'Orders',
     'Customers',
-    'Reviews',
+    'Brands',
+    'Categories',
   ];
 
   @override
@@ -96,70 +99,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                               ),
                               Expanded(
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                       Spacer(
-                                        flex: width > Responsive.tabletWidth  ?2 :1,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 2,
+                                child: Row(
+                                  children: [
+                                     Spacer(
+                                      flex: width > Responsive.tabletWidth  ?2 :1,
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
 
-                                                child: Container(
-                                                  child: Column(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .bottomLeft,
-                                                          child: Text(
-                                                            'Hello',
-                                                            style:
-                                                                GoogleFonts.roboto(
-                                                                    color: Colors
-                                                                        .grey[600],
-                                                                    fontSize:
-                                                                        12.sp,),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Align(
-                                                          alignment:
-                                                              Alignment.topLeft,
-                                                          child: Text(
-                                                            'Shabir khan',
-                                                            style: GoogleFonts
-                                                                .roboto(
-
-                                                              fontSize: 15.sp
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: Align(
+                                                    alignment: Alignment
+                                                        .bottomLeft,
+                                                    child: Text(
+                                                      'Hello',
+                                                      style:
+                                                          GoogleFonts.roboto(
+                                                              color: Colors
+                                                                  .grey[600],
+                                                              fontSize:
+                                                                  12.sp,),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Container(
-                                                  height: 50.h,
-                                                  decoration: const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.red),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: Text(
+                                                      'Shabir khan',
+                                                      style: GoogleFonts
+                                                          .roboto(
+
+                                                        fontSize: 15.sp
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              )
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                          Expanded(
+                                            child: Container(
+                                              height: 50.h,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.red),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ],
@@ -176,9 +173,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         controller: PageViewStatic.pageController,
                         children: const [
-                          HomeScreen(),
-                          OrdersScreen(),
-                          OrderDetailScreen()
+                          HomeScreen(),           // 0
+                          OrdersScreen(),         // 1
+                          OrderDetailScreen(),   //  2
+                          BrandScreen(),         //  3
+                          CategoriesScreen() ,    //  4
+                          AddNewBrandScreen(),    // 5
+
                         ],
                       ),
                     ),

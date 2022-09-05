@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Models/Utils/app_colors.dart';
+import 'package:food_delivery_admin_web/Models/Utils/rider_model.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/components/riders_dialog.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../Models/order_model.dart';
-import '../Order Detail View/order_detail_screen.dart';
+import '../../../Utils/Widgets/my_loading_indicator.dart';
 
 class CustomMenuButton extends StatelessWidget {
   final OrderModel model;
@@ -30,24 +31,97 @@ class CustomMenuButton extends StatelessWidget {
             .doc(model.clientId)
             .collection("OrderHistory")
             .doc(model.documentId);
-        print('=======> value $value');
+        debugPrint('=======> value $value');
 
         if (value == 'acceptOrder') {
           showDialog(
               context: context,
               builder: (context) {
-                return RidersDialog(
-                  onPressed: (){
-                    data.update({
-                      "order_status": "Deliver",
-                    });
+                return Dialog(
+                  child: Container(
+                    width: 0.3.sw,
+                    height: 0.5.sh,
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Please Select a Rider',
+                                style: GoogleFonts.roboto(),
+                              )),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('DeliveryRider')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData && !snapshot.hasError) {
+                                if (snapshot.data!.docs.isEmpty) {
+                                  return const Center(
+                                    child: Text('No Riders Found'),
+                                  );
+                                } else {
+                                  List<RiderModel> listOfRiders = [];
 
-                    userHistory.update({
-                      "order_status": "Completed",
-                    });
-                    Navigator.of(context).pop();
+                                  for (var i = 0;
+                                      i < snapshot.data!.docs.length;
+                                      i++) {
+                                    var data = snapshot.data!.docs[i];
+                                    var json = {
+                                      'rider_address': data['rider_address'],
+                                      'rider_image': data['rider_image'],
+                                      'rider_phone': data['rider_phone'],
+                                      'rider_name': data['rider_name']
+                                    };
 
-                  },
+                                    RiderModel model =
+                                        RiderModel.fromJson(json);
+                                    listOfRiders.add(model);
+                                  }
+
+                                  return ListView.builder(
+                                      padding: EdgeInsets.only(
+                                        left: 20.sp,
+                                        right: 20.sp,
+                                      ),
+                                      itemCount: listOfRiders.length,
+                                      itemBuilder: (context, index) {
+                                        var rider = listOfRiders[index];
+                                        return RidersCard(
+                                            model: rider,
+                                            onPressed: () {
+                                              var json = {
+                                                "order_status": "Accepted",
+                                                "rider_address": rider.riderAddress,
+                                                "rider_image": rider.riderImage,
+                                                "rider_phone": rider.riderMobile,
+                                                "rider_name": rider.riderName
+                                              };
+
+                                              data.update(json);
+                                              userHistory.update(json);
+                                              Navigator.of(context).pop();
+                                            });
+                                      });
+                                }
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const MyLoadingIndicator();
+                              } else {
+                                return const Center(
+                                  child: Text('Something went wrong'),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               });
         } else if (value == 'rejectOrder') {

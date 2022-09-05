@@ -31,11 +31,20 @@ class OrderModel {
     required this.userImage,
     required this.userMobileNo,
     required this.userName,
+    required this.riderAddress,
+    required this.riderImage,
+    required this.riderMobile,
+    required this.riderName,
   });
 
 
 
   static  OrderModel? model;
+  final String riderAddress;
+  final String riderName;
+  final String riderImage;
+  final String riderMobile;
+
   final String orderId;
   final String address;
   final String clientId;
@@ -52,6 +61,10 @@ class OrderModel {
   final String userName;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+    riderAddress: json['rider_address'],
+    riderImage: json['rider_image'],
+    riderMobile: json['rider_phone'],
+    riderName: json['rider_name'],
     address: json["address"],
     clientId: json["client_id"],
     dateTime: json["date_time"],

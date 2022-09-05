@@ -32,10 +32,45 @@ class DesktopDrawer extends StatelessWidget {
 
               flex: 6,
               child: ListView(
-                children: const [
+                children:  [
 
-                  DrawerElement(icon: Icons.home, label: 'Home' , jumpToIndex: 0,),
-                  DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 1,),
+                  const DrawerElement(icon: Icons.home, label: 'Home' , jumpToIndex: 0,),
+                  const DrawerElement(icon: Icons.history_rounded, label: 'View Orders' , jumpToIndex: 1,),
+
+
+                  SizedBox(height: 15.h,),
+                  Center(
+                    child: Text('Inventory' , style: GoogleFonts.roboto(
+                        color: Colors.white
+                    ),),
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                  ),
+                 
+                  const DrawerElement(icon: Icons.upload, label: 'Brands' , jumpToIndex: 3,),
+                  const DrawerElement(icon: Icons.category, label: 'Categories' , jumpToIndex: 4,),
+
+                  // ExpansionTile(
+                  //
+                  //   leading: Padding(
+                  //     padding:  EdgeInsets.only(left: 8.w),
+                  //     child: Icon(Icons.inventory, color: Colors.white,),
+                  //
+                  //   ),
+                  //    collapsedIconColor: Colors.white,
+                  //   iconColor: Colors.white,
+                  //   title: Padding(
+                  //     padding:  EdgeInsets.only(left:5.sp),
+                  //     child: Text('Inventory'
+                  //
+                  //         ,style: GoogleFonts.roboto(color: Colors.white, fontSize: 14.sp),
+                  //     ),
+                  //   ),
+                  // children:  const [
+                  //
+                  //
+                  // ],),
                 ],
               ),),
           ],

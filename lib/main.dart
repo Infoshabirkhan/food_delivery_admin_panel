@@ -20,6 +20,8 @@ void main() async{
       appId: "1:88141800442:web:3840da804b1ace124a3a43",
       messagingSenderId: "88141800442",
       projectId: "delivery-299a0",
+      storageBucket: "delivery-299a0.appspot.com",
+
     ),
   );
   runApp(const MyApp());

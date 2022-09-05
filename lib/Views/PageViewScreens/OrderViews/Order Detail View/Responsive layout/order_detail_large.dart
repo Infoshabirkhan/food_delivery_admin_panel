@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Models/order_model.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/Order%20Detail%20View/Responsive%20layout/rider_information_card/rider_informaition_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../static_properties.dart';
@@ -106,6 +107,11 @@ class OrderDetialLarge extends StatelessWidget {
               ),
 
 
+
+
+              RiderInformationCard(model: model),
+
+              SizedBox(height: 20.h,),
 
 
 
