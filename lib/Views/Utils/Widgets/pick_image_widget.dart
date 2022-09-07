@@ -1,20 +1,26 @@
+import 'dart:html';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase/firebase.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_delivery_admin_web/Controllers/Cubits/product_image_cubit.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/AddNewBrand/brands_static.dart';
+import 'package:food_delivery_admin_web/Views/Utils/Widgets/my_loading_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ndialog/ndialog.dart';
 import 'dart:async';
-import 'package:universal_html/html.dart' as html;
 
-import 'package:firebase/firebase.dart' as fb;
 class PickImageCard extends StatefulWidget {
+  final bool? isProduct;
   final String myDestination;
-  const PickImageCard({Key? key, required this.myDestination,}) : super(key: key);
+  const PickImageCard({Key? key, required this.myDestination, this.isProduct = false,}) : super(key: key);
 
   @override
   State<PickImageCard> createState() => _PickImageCardState();
@@ -23,99 +29,70 @@ class PickImageCard extends StatefulWidget {
 class _PickImageCardState extends State<PickImageCard> {
 
 
-  Future getImageFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile
-    ? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70,);
 
-    if (image == null) return;
+  Future pickImageAndUpload()async{
+    var input = FileUploadInputElement()..accept = 'image/';
 
-    sourceImage = File(image.path);
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    input.click();
+    input.onChange.listen((event) {
 
-   // localFileStatus = true;
+      if(input.files != null){
+        final file = input.files!.first;
+        setState(() {
 
-   // localFile = sourceImage;
-
-    setState(() {});
-
-    // var url = await uploadFile();
-    // print(url);
+        });
 
 
-   uploadedPhotoUrl = await uploadImageFile(sourceImage, imageName: sourceImage);
-
-   print('================');
-   print(uploadedPhotoUrl);
-    //CategoriesFormProperties.imageUrl = url;
-  }
-
-
-  Future<Uri> uploadImageFile(html.File image,
-      {required String imageName}) async {
-    fb.StorageReference storageRef = fb.storage().ref('images/$imageName');
-    fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(image).future;
-
-    Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
-    return imageUri;
-  }
-  Future <String?>uploadFile() async {
-    // ProgressDialog progressDialog = ProgressDialog((context),
-    //     title: const Text('Uploading image..'),
-    //     message: const Text('Please wait....'));
-
-    if (sourceImage == null) return null;
-   // progressDialog.show();
-    // final fileName = imagePath!.path;
-    // final destination = 'files/$fileName';
-
-    final destination = widget.myDestination;
-    try {
-
-      // Reference _reference = FirebaseStorage.instance
-      //     .ref()
-      //     .child('images/${widget.myDestination}/${DateTime.now().microsecondsSinceEpoch}');
-      // await _reference
-      //     .putData(
-      //   await sourceImage!.readAsBytes(),
-      //   SettableMetadata(contentType: 'image/jpeg'),
-      // )
-      //     .whenComplete(() async {
-      //   await _reference.getDownloadURL().then((value) {
-      //     uploadedPhotoUrl = value;
-      //   });
-      // });
-      final ref =
-      FirebaseStorage.instance.ref(destination).child('IMG-${DateTime.now()}');
-      await ref.putFile(sourceImage!.absolute);
+        showLoading = true;
+        sourceImage = file;
+        final reader = FileReader();
+        reader.readAsDataUrl(file);
+        reader.onLoadEnd.listen((event) async{
 
 
-     var url = await ref.getDownloadURL();
+          var uploadFile =  firebaseStorage.ref().child('${widget.myDestination}/${DateTime.now().microsecondsSinceEpoch}');
 
-      // FirebaseFirestore.instance
-      //     .collection('Users')
-      //     .doc(UserModel.model!.userId)
-      //     .update({'profile_image': url}).then((value) =>
-      //     Fluttertoast.showToast(msg: 'Profile picture updated'));
 
-      if (kDebugMode) {
-        print(url);
+
+       //   showPercentage = loading.bytesTransferred / loading.totalBytes * 100;
+
+           var uploadTask = await uploadFile.putBlob(file);
+
+
+
+
+
+
+
+          BrandStatic.imageUrl = await uploadTask.ref.getDownloadURL();
+
+          context.read<ProductImageCubit>().getImage(imageUrl: BrandStatic.imageUrl);
+
+          setState(() {
+            showLoading = false;
+
+          });
+
+
+
+          print('=================? url');
+          print(uploadedPhotoUrl);
+
+        });
+
       }
-
-    //  progressDialog.dismiss();
-      return url;
-
-    } catch (e) {
-  //    progressDialog.dismiss();
-      if (kDebugMode) {
-        print(e.toString());
-        //Fluttertoast.showToast(msg: e.toString());
-      }
-    }
+    });
   }
 
-  Uint8List webImage = Uint8List(8);
 
 
+
+
+
+
+
+  bool showLoading = false;
   var uploadedPhotoUrl;
   var sourceImage;
 
@@ -138,39 +115,24 @@ class _PickImageCardState extends State<PickImageCard> {
             child: sourceImage == null
                 ? Padding(
                     padding: EdgeInsets.only(left: 10.sp),
-                    child: const Text('Upload image...'),
+                    child: const Text('Choose Image....'),
                   )
                 :
             //Image.memory(sourceImage)
-            Text(sourceImage.toString())
+            showLoading == true ? Center(child: MyLoadingIndicator(),): Text('Completed')
 
             ,
           ),
           Expanded(
             child: InkWell(
               onTap: () async {
-                // var picker = ImagePicker();
-                //
-                // XFile? image = await picker.pickImage(
-                //   source: ImageSource.gallery,
-                //   imageQuality: 85,
-                // );
-                //
-                // if (image != null) {
-                //   var f = await image.readAsBytes();
-                //
-                //   webImage = f;
-                //
-                //   setState(() {});
-                //   sourceImage = webImage;
-                // } else {
-                //   debugPrint('no image selected');
-                // }
-                getImageFromGallery();
+
+                //getImageFromGallery();
+                pickImageAndUpload();
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[400],
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(10.sp),
                     bottomRight: Radius.circular(10.sp),
@@ -190,3 +152,60 @@ class _PickImageCardState extends State<PickImageCard> {
     );
   }
 }
+
+// Future getImageFromGallery() async {
+//   final ImagePicker _picker = ImagePicker();
+//   final XFile
+//   ? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70,);
+//
+//   if (image == null) return;
+//
+//   //sourceImage = File(image.path);
+//   sourceImage = image.readAsBytes();
+//
+//
+//   Reference reference =
+//   FirebaseStorage.instance.ref().child('${widget.myDestination}/${DateTime.now().microsecondsSinceEpoch}');
+//
+//   // var uploadImage = sourceImage;
+//   // var uploadTask = await reference.putFile(sourceImage);
+//
+//
+//   var uploadImage = await sourceImage;
+//   var loading =  reference.putData(uploadImage).snapshot;
+//
+//
+//   var uploadTask = await reference.putData(uploadImage);
+//
+//
+//
+//   setState(() {
+//     showPercentage = loading.bytesTransferred / loading.bytesTransferred *100;
+//
+//   });
+// //Upload the file to firebase
+//   // var taskSnapshot = await uploadTask;
+//
+// // Waits till the file is uploaded then stores the download url
+//   uploadedPhotoUrl = await uploadTask.ref.getDownloadURL();
+//
+//   // localFileStatus = true;
+//
+//   // localFile = sourceImage;
+//
+//   setState(() {});
+//
+//   // var url = await uploadFile();
+//   // print(url);
+//
+//   //uploadedPhotoUrl = await uploadFileToStorage(image: sourceImage);
+//
+//
+//
+//
+//   print('================');
+//   print(uploadedPhotoUrl);
+//   //CategoriesFormProperties.imageUrl = url;
+//
+//
+// }

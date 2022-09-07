@@ -1,9 +1,13 @@
 import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Models/Utils/app_colors.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/AddNewBrand/brands_static.dart';
 import 'package:food_delivery_admin_web/Views/Utils/Widgets/pick_image_widget.dart';
+import 'package:food_delivery_admin_web/Views/Utils/Widgets/required_text_helper.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddNewBrandScreen extends StatefulWidget {
@@ -75,51 +79,99 @@ class _AddNewBrandScreenState extends State<AddNewBrandScreen> {
               flex: 6,
               child: ListView(
                 children: [
-                  Text(
 
-                    'Please Fill the form',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                      fontSize: 18.sp
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+
+                        flex: 2,
+                        child:                   Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+
+                          'Please Fill the form',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                              fontSize: 17.sp
+                          ),
+                        ),
+                      ),
+                      ),
+                      Expanded(child: Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                            onTap: (){
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(Icons.clear)),
+                      ),),
+                    ],
                   ),
-                  PickImageCard(myDestination: 'Brands',),
+                  Container(
+
+                      height: 50.h,
+                      child: const PickImageCard(myDestination: 'Brands',)),
                   SizedBox(height: 10.h,),
-                  Text('Brand Name',style: GoogleFonts.roboto(),),
+                  const RequiredTextHelperWidget(text: 'Brand Name'),
                    TextField(
-                    controller: brandNameController,
-                    decoration: InputDecoration(
+                    controller: BrandStatic.brandNameController,
+                    decoration: const InputDecoration(
 
                       hintText: 'Brand name',
                       border: OutlineInputBorder()
                     ),
                   ),
                   SizedBox(height: 10.sp,),
-                  Text('Description',style: GoogleFonts.roboto(),),
+                 const RequiredTextHelperWidget(text: 'Description'),
 
                   TextField(
                     maxLines: 4,
-                    controller: brandDescriptionController,
-                    decoration: InputDecoration(
+                    controller: BrandStatic.brandDescriptionController,
+                    decoration: const InputDecoration(
                         hintText: 'Description', border: OutlineInputBorder()),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.kBlue,
+              child: InkWell(
+                onTap: (){
+
+                  if(BrandStatic.validate() == true){
+                    var brandName = BrandStatic.brandNameController.text.trim();
+                    var json = {
+                      'brand_name' : brandName,
+                      'brand_description' : BrandStatic.brandDescriptionController.text.trim(),
+                      'brand_image' : BrandStatic.imageUrl,
+                      'created_date' : DateTime.now(),
+                    };
+
+                    var ref = FirebaseFirestore.instance.collection('Brands').doc(brandName);
 
 
-                  borderRadius: BorderRadius.circular(20.sp)
-                ),
-                margin: EdgeInsets.only(
-                  left: 20.sp,
-                  right: 20.sp,
-                ),
-                child: Center(
-                  child: Text('Submit', style: GoogleFonts.roboto(color: Colors.white),),
+                    ref.set(json);
+                    BrandStatic.clearAllFields();
+
+                    Navigator.of(context).pop();
+
+
+                  }
+
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.kBlue,
+
+
+                    borderRadius: BorderRadius.circular(20.sp)
+                  ),
+                  margin: EdgeInsets.only(
+                    left: 20.sp,
+                    right: 20.sp,
+                  ),
+                  child: Center(
+                    child: Text('Submit', style: GoogleFonts.roboto(color: Colors.white),),
+                  ),
                 ),
               ),
             ),

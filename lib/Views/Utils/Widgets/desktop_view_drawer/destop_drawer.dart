@@ -39,10 +39,14 @@ class DesktopDrawer extends StatelessWidget {
 
 
                   SizedBox(height: 15.h,),
-                  Center(
-                    child: Text('Inventory' , style: GoogleFonts.roboto(
-                        color: Colors.white
-                    ),),
+                  Container(
+                    padding: EdgeInsets.only(top: 5.sp, bottom: 5.sp,),
+                    color: Colors.white.withOpacity(0.2),
+                    child: Center(
+                      child: Text('Inventory' , style: GoogleFonts.roboto(
+                          color: Colors.grey[400]
+                      ),),
+                    ),
                   ),
                   const Divider(
                     color: Colors.white,

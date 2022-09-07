@@ -2,33 +2,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Models/Utils/app_colors.dart';
+import 'package:food_delivery_admin_web/Models/categoriesModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../Models/BrandsModel.dart';
-import 'AddNewBrand/brands_static.dart';
+import '../BrandsViews/AddNewBrand/brands_static.dart';
 
-class BrandsCard extends StatefulWidget {
-  final BrandsModel data;
+class CategoryCard extends StatefulWidget {
+  final CategoriesModel data;
 
-  const BrandsCard({
+  const CategoryCard({
     Key? key,
     required this.data,
   }) : super(key: key);
 
   @override
-  State<BrandsCard> createState() => _BrandsCardState();
+  State<CategoryCard> createState() => _CategoryCardState();
 }
 
-class _BrandsCardState extends State<BrandsCard> {
+class _CategoryCardState extends State<CategoryCard> {
   late TextEditingController brandController;
   late TextEditingController descriptionController;
 
   @override
   void initState() {
     // TODO: implement initState
-    brandController = TextEditingController(text: widget.data.brandName);
+    brandController = TextEditingController(text: widget.data.categoryName);
     descriptionController =
-        TextEditingController(text: widget.data.brandDescription);
+        TextEditingController(text: widget.data.categoryDescription);
 
     super.initState();
   }
@@ -58,7 +59,7 @@ class _BrandsCardState extends State<BrandsCard> {
                   topRight: Radius.circular(15.sp),
                 ),
                 image: DecorationImage(
-                  image: NetworkImage(widget.data.brandImage),
+                  image: NetworkImage(widget.data.categoryImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -76,7 +77,7 @@ class _BrandsCardState extends State<BrandsCard> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.data.brandName,
+                        widget.data.categoryName,
                         style: GoogleFonts.roboto(fontSize: 18.sp),
                       ),
                     ),
@@ -86,7 +87,7 @@ class _BrandsCardState extends State<BrandsCard> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        widget.data.brandDescription,
+                        widget.data.categoryDescription,
                         style: GoogleFonts.roboto(
                             fontSize: 16.sp, color: Colors.grey[600]),
                       ),
@@ -104,7 +105,6 @@ class _BrandsCardState extends State<BrandsCard> {
                                     return Dialog(
                                       child: Container(
                                         padding: EdgeInsets.all(5.sp),
-
                                         height: 250.sp,
                                         width: 200.sp,
                                         child: Column(
@@ -117,15 +117,17 @@ class _BrandsCardState extends State<BrandsCard> {
                                                     children: [
                                                       Expanded(
                                                         child: Align(
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            child: Text(
-                                                              'Update ${widget.data.brandName}',
-                                                              style: GoogleFonts.roboto(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),),
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(
+                                                            'Update ${widget.data.categoryName}',
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                          ),
+                                                        ),
                                                       ),
                                                       Expanded(
                                                         child: Align(
@@ -173,8 +175,9 @@ class _BrandsCardState extends State<BrandsCard> {
                                                         descriptionController,
                                                     decoration:
                                                         const InputDecoration(
-                                                            border:
-                                                                OutlineInputBorder(),),
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -183,23 +186,25 @@ class _BrandsCardState extends State<BrandsCard> {
                                               child: InkWell(
                                                 onTap: () {
                                                   var json = {
-                                                    'brand_name':
+                                                    'category_name':
                                                         brandController.text
                                                             .trim(),
-                                                    'brand_description':
+                                                    'category_description':
                                                         descriptionController
                                                             .text
                                                             .trim()
                                                   };
                                                   FirebaseFirestore.instance
-                                                      .collection('Brands')
+                                                      .collection('Categories')
                                                       .doc(widget
                                                           .data.documentId)
                                                       .update(json);
 
                                                   Navigator.of(context).pop();
 
-                                                  BrandStatic.showToastMessage(msg: 'Updated Successfully');
+                                                  BrandStatic.showToastMessage(
+                                                      msg:
+                                                          'Updated Successfully');
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
@@ -265,13 +270,18 @@ class _BrandsCardState extends State<BrandsCard> {
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                             FirebaseFirestore.instance
-                                                .collection('Brands')
+                                                .collection('Categories')
                                                 .doc(widget.data.documentId)
                                                 .delete();
-                                            BrandStatic.showToastMessage(msg: 'Deleted Successfully');
-
+                                            BrandStatic.showToastMessage(
+                                                msg: 'Deleted Sucessfully');
                                           },
-                                          child: const Text('Yes' ,style: TextStyle(color: Colors.red),),
+                                          child: const Text(
+                                            'Yes',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     );
@@ -279,8 +289,11 @@ class _BrandsCardState extends State<BrandsCard> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10.sp)),
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(
+                                  10.sp,
+                                ),
+                              ),
                               child: Center(
                                 child: Text(
                                   'Delete',

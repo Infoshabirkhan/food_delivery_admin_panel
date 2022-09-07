@@ -4,15 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Controllers/Cubits/drawer_pageview_cubit.dart';
 import 'package:food_delivery_admin_web/Models/Utils/responsive.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/HomeScreenViews/home_screen.dart';
-import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/add_new_brand.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/AddProductView/add_product_screen.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/AddNewBrand/add_new_brand.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/brands_views.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/CategoriesViews/categories_screen.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/CategoriesViews/category_wise_detail_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/Order%20Detail%20View/order_detail_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/orders_screen.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Utils/Widgets/desktop_view_drawer/destop_drawer.dart';
+import 'InventoryViews/BrandsViews/brand_wise_products.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -83,7 +86,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 3,
+                                      flex: width < Responsive.mobileWidth ? 2: 3,
+
+
+//                                      flex: 3,
                                       child: Container(
                                         padding: EdgeInsets.only(
                                           left: 8.sp,
@@ -102,9 +108,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Row(
                                   children: [
                                      Spacer(
-                                      flex: width > Responsive.tabletWidth  ?2 :1,
-                                    ),
+                                     // flex: width > Responsive.tabletWidth  ?2 :1,
+                                    flex: width > Responsive.tabletWidth  ?2 :1,
+
+
+                                     ),
                                     Expanded(
+                                      flex: width < Responsive.mobileWidth ? 2: 1,
+
                                       child: Row(
                                         children: [
                                           Expanded(
@@ -178,7 +189,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           OrderDetailScreen(),   //  2
                           BrandScreen(),         //  3
                           CategoriesScreen() ,    //  4
-                          AddNewBrandScreen(),    // 5
+                          BrandWiseProduct(),    // 5
+                          CategoryWiseDetailScreen(),  // 6
+                          AddProductScreen()          // 7
 
                         ],
                       ),

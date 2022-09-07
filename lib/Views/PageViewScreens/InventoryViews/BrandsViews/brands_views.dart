@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Models/BrandsModel.dart';
-import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/add_new_brand.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/AddNewBrand/add_new_brand.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/InventoryViews/BrandsViews/brands_card.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Utils/Widgets/my_loading_indicator.dart';
 
@@ -16,21 +15,28 @@ class BrandScreen extends StatefulWidget {
   State<BrandScreen> createState() => _BrandScreenState();
 }
 
+
 class _BrandScreenState extends State<BrandScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
 
           showDialog(context: (context), builder: (context){
-            return AddNewBrandScreen();
+            return const AddNewBrandScreen();
           });
 
           // PageViewStatic.pageController.jumpToPage(5);
         },
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
+        label: Text('Add Brand'),
+//        child: const Icon(Icons.add),
       ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Brands').snapshots(),
         builder: (context, snapshot) {
@@ -61,7 +67,14 @@ class _BrandScreenState extends State<BrandScreen> {
                 itemCount: listOfBrands.length,
                 itemBuilder: (context, index) {
                   var data = listOfBrands[index];
-                  return BrandsCard(data: data);
+                  return InkWell(
+                      onTap: (){
+                        BrandsModel.model = data;
+
+                        PageViewStatic.pageController.jumpToPage(5);
+
+                      },
+                      child: BrandsCard(data: data));
                 },
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 300,

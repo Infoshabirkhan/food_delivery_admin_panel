@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_admin_web/Controllers/Cubits/drawer_pageview_cubit.dart';
+import 'package:food_delivery_admin_web/Models/Utils/responsive.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/static_properties.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,12 +23,19 @@ class DrawerElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var width = MediaQuery.of(context).size.width;
+
+    print('==== > drawer width = $width');
     return BlocBuilder<DrawerPageviewCubit, int>(
       builder: (context, state) {
         return InkWell(
           onTap: () {
             PageViewStatic.pageController.jumpToPage(jumpToIndex);
             context.read<DrawerPageviewCubit>().getIndex(index: jumpToIndex);
+            if(width < Responsive.tabletWidth){
+              Navigator.of(context).pop();
+            }
           },
           child: Container(
             margin: EdgeInsets.only(bottom: 5.h, left: 5.w),

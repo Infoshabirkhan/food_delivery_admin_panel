@@ -27,7 +27,14 @@ class RidersCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Container(),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(model.riderImage)
+                  )
+                ),
+              ),
             ),
             Expanded(
                 flex: 3,

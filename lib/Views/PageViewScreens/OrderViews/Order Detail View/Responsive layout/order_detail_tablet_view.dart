@@ -37,7 +37,7 @@ class OrderDetailTabletView extends StatelessWidget {
           'Order Id # ${model.orderId}',
           style: GoogleFonts.roboto(
             fontSize: 15.sp,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(
@@ -80,7 +80,7 @@ class OrderDetailTabletView extends StatelessWidget {
                               child: Text(
                                 model.userName,
                                 style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 15.sp,
                                 ),
                               ),
@@ -100,8 +100,8 @@ class OrderDetailTabletView extends StatelessWidget {
                             child: Text(
                               model.userMobileNo,
                               style: GoogleFonts.roboto(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
@@ -122,7 +122,7 @@ class OrderDetailTabletView extends StatelessWidget {
                         child: Text(
                           'Address',
                           style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             fontSize: 16.sp,
                           ),
                         ),
@@ -173,8 +173,8 @@ class OrderDetailTabletView extends StatelessWidget {
                           child: Text(
                             model.pName,
                             style: GoogleFonts.roboto(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -183,8 +183,8 @@ class OrderDetailTabletView extends StatelessWidget {
                         child: Text(
                           'Rs: ${model.price}x',
                           style: GoogleFonts.roboto(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -198,7 +198,8 @@ class OrderDetailTabletView extends StatelessWidget {
                     'Qty \n${model.quantity}',
                     style: GoogleFonts.roboto(
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]
                     ),
                   ),
                 ),

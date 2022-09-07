@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery_admin_web/Models/Utils/responsive.dart';
 import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/components/order_card.dart';
+import 'package:food_delivery_admin_web/Views/PageViewScreens/OrderViews/components/order_card_mobile_view.dart';
 
 import '../../../Models/Utils/app_colors.dart';
 import '../../../Models/order_model.dart';
@@ -19,6 +21,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   TextEditingController dateController =TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
@@ -32,8 +35,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                   Expanded(child: TextField(
                     decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.search),
+                      suffixIcon: const Icon(Icons.search),
                       hintText: 'Search here',
+                      disabledBorder: OutlineInputBorder(
+
+                        borderSide: BorderSide(
+                            color: AppColors.kGrey.withOpacity(0.5)
+                        ),
+                        borderRadius: BorderRadius.circular(20.sp),
+
+                      ),
                       border: OutlineInputBorder(
 
                         borderSide: BorderSide(
@@ -55,17 +66,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),),
 
                   Spacer(
-                    flex: 2,
+                    flex: width < Responsive.mobileWidth ? 2 : 1,
                   ),
-                  Expanded(child: Row(
-                    children: [
-                      Expanded(
+                  Visibility(
+                    visible: width < Responsive.mobileWidth ? false: true,
 
-                          flex: 2,
-                          child: CustomDatePicker(controller: dateController,)),
-                      Spacer(),
-                    ],
-                  ),),
+                    child: Expanded(child: Row(
+                      children: [
+                        Expanded(
+
+                            flex: 2,
+                            child: CustomDatePicker(controller: dateController,)),
+                      ],
+                    ),),
+                  ),
                 ],
               ),
             ),
@@ -111,9 +125,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                         return Column(
                           children: [
-                            const Expanded(
-                              child: OrderCard(
-                                cardColor: Colors.white,
+                            Visibility(
+                              visible: width < Responsive.mobileWidth ? false: true,
+                              child: const Expanded(
+                                child: OrderCard(
+                                  cardColor: Colors.white,
+                                ),
                               ),
                             ),
                             Expanded(
@@ -123,7 +140,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   itemBuilder: (context, index) {
                                     var data = listOfOrders[index];
 
-                                    return OrderCard(
+                                    return  width < Responsive.mobileWidth ?
+
+                                        OrderCardMobileView(model: data,)
+                                        : OrderCard(
                                       cardColor: index % 2 == 1
                                           ? Colors.white
                                           : AppColors.kGrey,

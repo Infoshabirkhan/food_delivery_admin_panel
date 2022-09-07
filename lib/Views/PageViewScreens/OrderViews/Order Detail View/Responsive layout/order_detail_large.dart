@@ -23,7 +23,7 @@ class OrderDetialLarge extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 5,
+          flex: 4,
           child: ListView(
             padding:  EdgeInsets.only(
               left: 10.sp,
@@ -316,6 +316,7 @@ class OrderDetialLarge extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
+                                  height: 70.h,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
